@@ -3,16 +3,18 @@
 
 
 #include <vector>
+#include <string>
 #include "Card.h"
 
 class Hand
 {
 public:
-    std::vector<Card> Cards();
+    std::vector<Card>& Cards();
     int GetSum();
+    void AddCard(const Card& card);
+    std::string ToString();
 private:
     std::vector<Card> _cards;
-    int GetCardSoftValue(Card& card);
 };
 
 

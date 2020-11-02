@@ -1,7 +1,8 @@
 #include "Hand.h"
 
-std::vector<Card> Hand::Cards()
+std::vector<Card>& Hand::Cards()
 {
+    //return a copy to prevent shenanigans
     return _cards;
 }
 
@@ -11,8 +12,8 @@ int Hand::GetSum()
     int result = 0;
     for (auto &card : _cards)
     {
-        result += GetCardSoftValue(card);
-        if (card.Rank == Ranks::A)
+        result += card.GetSoftValue();
+        if (card.Rank() == Ranks::A)
         {
             aceCount++;
         }
@@ -25,45 +26,24 @@ int Hand::GetSum()
     return result;
 }
 
-int Hand::GetCardSoftValue(Card &card)
+void Hand::AddCard(const Card& card)
 {
-    int result = 0;
-    switch (card.Rank)
-    {
+    _cards.push_back(card);
+}
 
-        case A:
-            result = 11;
-            break;
-        case _2:
-            result = 2;
-            break;
-        case _3:
-            result = 3;
-            break;
-        case _4:
-            result = 4;
-            break;
-        case _5:
-            result = 5;
-            break;
-        case _6:
-            result = 6;
-            break;
-        case _7:
-            result = 7;
-            break;
-        case _8:
-            result = 8;
-            break;
-        case _9:
-            result = 9;
-            break;
-        case _10:
-        case J:
-        case Q:
-        case K:
-            result = 10;
-            break;
+std::string Hand::ToString()
+{
+    std::string result;
+    for (auto card : _cards)
+    {
+        if (result.empty())
+        {
+            result = card.ToString();
+        }
+        else
+        {
+            result = result + "_" + card.ToString();
+        }
     }
     return result;
 }
