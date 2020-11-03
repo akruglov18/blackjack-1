@@ -12,6 +12,7 @@ public:
     std::vector<Card>& Cards();
     int GetSum();
     void AddCard(const Card& card);
+    void Clear();
     std::string ToString();
 private:
     std::vector<Card> _cards;

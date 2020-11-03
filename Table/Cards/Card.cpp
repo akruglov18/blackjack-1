@@ -13,6 +13,11 @@ Card& Card::operator=(const Card &card)
 
 int Card::GetSoftValue()
 {
+    if (IsHidden)
+    {
+        return 0;
+    }
+
     int result = 0;
     switch (_rank)
     {

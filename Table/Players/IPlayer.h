@@ -10,14 +10,24 @@ enum PlayerDecisions
     Stand
 };
 
+enum RoundResult
+{
+    Loss,
+    Win,
+    Push
+};
+
 class IPlayer
 {
 public:
     void AcceptCard(Card card);
     bool IsBusted();
-    virtual PlayerDecisions GetPlayerDecision(Hand dealerHand, std::vector<IPlayer*> playerHands, int playerIndex) = 0;
+    virtual PlayerDecisions GetPlayerDecision(Hand dealerHand, std::vector<IPlayer*> players, int playerIndex) = 0;
+    virtual void UpdateGameState(Hand dealerHand, std::vector<IPlayer*> players, int playerIndex) = 0;
+    virtual void ReportResult(RoundResult roundResult) = 0;
 
-    Hand GetHand();
+    Hand& GetHand();
+    void ClearHand();
 
 protected:
     Hand _hand;

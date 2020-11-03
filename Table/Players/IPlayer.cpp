@@ -11,7 +11,12 @@ bool IPlayer::IsBusted()
     return _hand.GetSum() > 21;
 }
 
-Hand IPlayer::GetHand()
+Hand& IPlayer::GetHand()
 {
     return _hand;
+}
+
+void IPlayer::ClearHand()
+{
+    _hand.Clear();
 }

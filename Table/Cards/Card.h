@@ -16,7 +16,7 @@ class Card
 {
 public:
     Card(Ranks rank, Suits suit, bool isHidden = false) : _rank(rank), _suit(suit), IsHidden(isHidden){};
-    Card(const Card& card) : Card(card._rank, card._suit) {};
+    Card(const Card& card) : Card(card._rank, card._suit, card.IsHidden) {};
 
     Card& operator=(Card const& card);
     int GetSoftValue();

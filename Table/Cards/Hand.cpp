@@ -45,5 +45,11 @@ std::string Hand::ToString()
             result = result + "_" + card.ToString();
         }
     }
+    result = result + " (" + std::to_string(GetSum()) + ")";
     return result;
+}
+
+void Hand::Clear()
+{
+    _cards.clear();
 }

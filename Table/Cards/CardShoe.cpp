@@ -5,7 +5,7 @@
 
 Card& CardShoe::DrawCard(bool hidden)
 {
-    if (_cards.empty() || _cardIndex)
+    if (_cardIndex >= _cards.size())
     {
         throw std::length_error("No cards left in card shoe");
     }

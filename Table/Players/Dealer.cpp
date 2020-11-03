@@ -1,7 +1,8 @@
 #include "Dealer.h"
 #include <vector>
+#include <stdexcept>
 
-PlayerDecisions Dealer::GetPlayerDecision(Hand dealerHand, std::vector<IPlayer*> playerHands, int playerIndex)
+PlayerDecisions Dealer::GetPlayerDecision(Hand dealerHand, std::vector<IPlayer*> players, int playerIndex)
 {
     if (_hand.GetSum() < 17)
     {
@@ -20,11 +21,12 @@ void Dealer::DealCard(IPlayer* player, Card &card)
 
 void Dealer::PlayRound(const std::vector<IPlayer*>& players, CardShoe &shoe)
 {
+    ClearAllHands(players);
     for (IPlayer* player : players)
     {
         //deal 2 cards to each player
-        player->AcceptCard(shoe.DrawCard());
-        player->AcceptCard(shoe.DrawCard());
+        DealCard(player, shoe.DrawCard());
+        DealCard(player, shoe.DrawCard());
     }
     //deal 2 cards to self - 1 faceup, 1 facedown
     DealCard(this, shoe.DrawCard());
@@ -62,6 +64,41 @@ void Dealer::PlayRound(const std::vector<IPlayer*>& players, CardShoe &shoe)
             DealCard(this, shoe.DrawCard());
         }
     }
+    //show all players the end state of the table and report if they've won
+    int dealerSum = _hand.GetSum();
+    bool dealerBusted = IsBusted();
+    for (int i = 0; i < players.size(); i++)
+    {
+        IPlayer* player = players[i];
+        player->UpdateGameState(GetHand(), players, i);
+        RoundResult roundResult;
+        int playerSum = player->GetHand().GetSum();
+        bool playerBusted = player->IsBusted();
+        if (playerBusted)
+        {
+            roundResult = RoundResult::Loss;
+        }
+        else
+        {
+            if (dealerBusted || playerSum > dealerSum)
+            {
+                roundResult = RoundResult::Win;
+            }
+            else if (playerSum == dealerSum)
+            {
+                roundResult = RoundResult::Push;
+            }
+            else if (playerSum < dealerSum)
+            {
+                roundResult = RoundResult::Loss;
+            }
+            else
+            {
+                throw std::logic_error("unexpected round result");
+            }
+        }
+        player->ReportResult(roundResult);
+    }
 }
 
 void Dealer::RevealCard()
@@ -71,4 +108,23 @@ void Dealer::RevealCard()
         Card& card = _hand.Cards()[i];
         card.IsHidden = false;
     }
+}
+
+void Dealer::ClearAllHands(std::vector<IPlayer *> players)
+{
+    _hand.Clear();
+    for (auto player : players)
+    {
+        player->GetHand().Clear();
+    }
+}
+
+void Dealer::UpdateGameState(Hand dealerHand, std::vector<IPlayer *> players, int playerIndex)
+{
+
+}
+
+void Dealer::ReportResult(RoundResult roundResult)
+{
+
 }
