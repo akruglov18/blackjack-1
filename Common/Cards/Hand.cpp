@@ -62,7 +62,17 @@ void Hand::Reveal()
     }
 }
 
-bool Hand::IsBlackjack() const
+bool Hand::IsNatural() const
 {
     return GetSum() == 21 && _cards.size() == 2;
+}
+
+int Hand::GetHiddenSum() const
+{
+    int result = 0;
+    for (auto card : _cards)
+    {
+        result += card.GetHiddenSoftValue();
+    }
+    return result;
 }
