@@ -76,3 +76,10 @@ int Hand::GetHiddenSum() const
     }
     return result;
 }
+
+Card& Hand::DrawCard()
+{
+    Card& card = _cards.back();
+    _cards.pop_back();
+    return card;
+}

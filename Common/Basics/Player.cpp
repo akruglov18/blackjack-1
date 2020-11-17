@@ -23,7 +23,7 @@ void Player::Play(ICardDealer* cardDealer)
     {
         if (IsBusted() || _hand.GetSum() == 21)
         {
-            break;
+            return;
         }
 
         decision = GetDecision();
@@ -33,7 +33,26 @@ void Player::Play(ICardDealer* cardDealer)
         }
         else if (decision == PlayerDecisions::Stand)
         {
-            break;
+            return;
+        }
+        else if (decision == PlayerDecisions::Doubledown)
+        {
+            if (_hand.Cards().size() > 2)
+            {
+                ReportError("dd_error:cards");
+            }
+            bool hasEnoughMoney = _bank.Withdraw(_bet.Main);
+            if (hasEnoughMoney)
+            {
+                _bet.Main *= 2;
+                cardDealer->DealFaceupCard(this);
+                return;
+            }
+            else
+            {
+                ReportError("dd_error:money");
+                continue;
+            }
         }
         else
         {

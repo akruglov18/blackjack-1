@@ -36,6 +36,7 @@ public:
     Suits Suit() const;
 
     std::string ToString() const;
+
 private:
     int GetHiddenSoftValue() const;
 
