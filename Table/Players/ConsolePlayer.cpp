@@ -113,7 +113,7 @@ void ConsolePlayer::PrintGameState()
     std::cout << "Dealer: " << _gameState->GetDealerHand().ToString() << std::endl;
     for (auto info : _gameState->GetPlayerInfo())
     {
-        std::cout << "Player " << info.GetHand().ToString() << ": " << std::endl;
+        std::cout << "Player " << info.TablePosition() << ": " << info.GetHand().ToString() << ": " << std::endl;
     }
     std::cout << "You are Player " << TablePosition << std::endl;
 }
