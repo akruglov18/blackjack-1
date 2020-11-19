@@ -42,7 +42,7 @@ int ConsolePlayer::RequestStartingBet(int minBet)
                 std::cout << "Amount is less than minimum bet, try again" << std::endl;
             }
         }
-        catch (std::exception &ex)
+        catch (std::exception& ex)
         {
             std::cout << "Incorrect input, try again and input an integer" << std::endl;
             inputCorrect = false;
@@ -89,7 +89,7 @@ int ConsolePlayer::RequestInsuranceBet(int maxBet)
                 std::cout << "Amount is not in acceptable range, try again" << std::endl;
             }
         }
-        catch (std::exception &ex)
+        catch (std::exception& ex)
         {
             std::cout << "Incorrect input, try again and input an integer" << std::endl;
             inputCorrect = false;
@@ -160,7 +160,7 @@ PlayerDecisions ConsolePlayer::GetDecision()
     PrintGameState();
     while (true)
     {
-        std::cout << "What is your decision? (hit/stand): ";
+        std::cout << "What is your decision? (hit/stand/dd): ";
         std::string input;
         std::getline(std::cin, input);
         if (input == "hit")
@@ -171,10 +171,33 @@ PlayerDecisions ConsolePlayer::GetDecision()
         {
             return PlayerDecisions::Stand;
         }
+        else if (input == "doubledown" || input == "dd")
+        {
+            if (_hand.Cards().size() > 2)
+            {
+                std::cout << "doubling down is only possible with the initial 2 cards" << std::endl;
+            }
+            else
+            {
+                return PlayerDecisions::Doubledown;
+            }
+        }
         else
         {
-            std::cout << "incorrect input, please choose hit or stand" << std::endl;
+            std::cout << "incorrect input, please choose available action from the list" << std::endl;
         }
+    }
+}
+
+void ConsolePlayer::ReportError(std::string message)
+{
+    if (message == "dd_error:money")
+    {
+        std::cout << "not enough money to double down" << std::endl;
+    }
+    else
+    {
+        std::cout << message << std::endl;
     }
 }
 

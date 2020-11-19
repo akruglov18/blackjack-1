@@ -30,6 +30,7 @@ public:
     int TablePosition;
 
 protected:
+    virtual void ReportError(std::string message) = 0;
     GameState* _gameState;
     Bet _bet;
     Bank _bank;

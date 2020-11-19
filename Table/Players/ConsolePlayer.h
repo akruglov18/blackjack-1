@@ -13,6 +13,8 @@ public:
     void PayInsurance(int amount) override;
     void PayMainBet(int amount) override;
     PlayerDecisions GetDecision() override;
+protected:
+    void ReportError(std::string message) override;
 private:
     void PrintGameState();
     std::string GetInput();
