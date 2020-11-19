@@ -8,7 +8,9 @@
 enum PlayerDecisions
 {
     Hit,
-    Stand
+    Stand,
+    Doubledown,
+    Split
 };
 
 enum RoundResult
